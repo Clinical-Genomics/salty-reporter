@@ -1,0 +1,6 @@
+name: reportconv
+channels:
+  - defaults
+dependencies:
+  - jinja2
+prefix: /home/shl/opt/mc3/envs/reportconv
