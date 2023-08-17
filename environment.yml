@@ -1,6 +1,6 @@
-name: reportconv
+name: saltyreporter
 channels:
   - defaults
 dependencies:
   - jinja2
-prefix: /home/shl/opt/mc3/envs/reportconv
+prefix: /home/shl/opt/mc3/envs/saltyreporter
