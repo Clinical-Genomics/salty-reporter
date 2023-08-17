@@ -10,3 +10,12 @@ on possibly replacing microSALT with JASEN for bacterial epityping.
 
 It is not yet a MTP/Medicinal Technological Product. Whether it will be in the
 future remains to see.
+
+## Usage
+
+1. Get the result file from running JASEN, for example the example output file
+   `p1000_result.json`
+2. Run salty reporter on the JASEN results like this:
+   ```bash
+   python saltyreporter/main.py -i <jasen_result.json> -o <some_html_file.html>
+   ```
