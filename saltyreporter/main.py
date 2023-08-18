@@ -1,4 +1,5 @@
 import argparse
+import models
 from datetime import date, datetime
 from jinja2 import BaseLoader, Environment, FileSystemLoader, Template
 import json
@@ -36,7 +37,7 @@ def main():
 
     # Initiate some dummy objects
     entry = Entry()
-    samples = [Sample()]
+    samples = [models.Sample("Dummy_Sample_ID")]
     threshold = Threshold()
     reports = [Report()]
 
@@ -74,51 +75,6 @@ class Entry:
         self.projects = []
         self.pubmlst_ST = None
         self.ST = None
-
-
-class Sample:
-    def __init__(self):
-        self.application_tag = ""
-        self.average_coverage = ""
-
-        self.CG_ID_sample = ""
-
-        self.coverage_100x = ""
-        self.coverage_10x = ""
-        self.coverage_30x = ""
-        self.coverage_50x = ""
-
-        self.date_arrival = datetime.now()
-        self.date_libprep = datetime.now()
-        self.date_sequencing = datetime.now()
-        self.date_analysis = datetime.now()
-
-        self.duplication_rate = ""
-        self.gc_percentage = 0.5
-
-        self.genome_length = 0
-        self.insert_size = ""
-
-        self.mapped_rate = ""
-        self.method_libprep = ""
-        self.method_sequencing = ""
-
-        self.n50 = 0
-
-        self.organism = ""
-        self.priority = ""
-        self.projects = []
-
-        self.reference_genome = ""
-        self.reference_length = 0
-        self.resistances = ""
-
-        self.seq_types = ""
-        self.ST = 0
-        self.ST_status = ""
-
-        self.threshold = 0
-        self.total_reads = 0
 
 
 class Threshold:
