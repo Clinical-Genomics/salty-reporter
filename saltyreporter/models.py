@@ -17,6 +17,7 @@ class Sample:
         )
         self.Customer_ID_sample: str = ""  # db.Column(db.String(40))
         self.organism: str = ""  # db.Column(db.String(30))
+        # ST = Sequence Type
         self.ST: int = -1  # db.Column(db.SmallInteger, default=-1)
         self.pubmlst_ST: int = -1  # db.Column(db.SmallInteger, default=-1)
         self.date_analysis: datetime = (
