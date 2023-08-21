@@ -106,6 +106,7 @@ def main():
 
     typing_tpl = j2env.get_template("typing_page.html")
     qc_tpl = j2env.get_template("alignment_page.html")
+    st_tpl = j2env.get_template("STtracker_page.html")
 
     # Hack to make the template parsing happy.
     # This is a function that is typically available from Flask, but not here
@@ -141,6 +142,13 @@ def main():
     with open(qc_path, "w") as qc_file:
         qc_file.write(qc_html)
         print(f"Wrote QC report to: {qc_path}")
+
+    st_tpl.globals["url_for"] = url_for
+    st_html = st_tpl.render() # TODO: Implement
+    st_path = f"{args.output_basename}_sttracker.html"
+    with open(st_path, "w") as st_file:
+        st_file.write(st_html)
+        print(f"Wrote ST tracker report to: {st_path}")
 
 
 def url_for(filetype, filename=""):
