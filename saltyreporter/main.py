@@ -93,14 +93,14 @@ def main():
         )  # TODO: Verify
         sample.coverage_10x = postalign_res["pct_above_x"]["10"]  # TODO: Verify
         sample.coverage_30x = postalign_res["pct_above_x"]["30"]  # TODO: Verify
-        sample.coverage_50x = 0.0  # TODO: MISSING IN JASEN DATA
+        sample.coverage_50x = 0.0  # FIXME: MISSING IN JASEN DATA
         sample.coverage_100x = postalign_res["pct_above_x"]["100"]  # TODO: Verify
         sample.average_coverage = postalign_res["mean_cov"]
-        sample.reference_genome = MISSING_IN_JASEN_REPORT
+        sample.reference_genome = MISSING_IN_JASEN_REPORT  # FIXME: MISSING
         sample.reference_length = quast_res["reference_length"]
 
-        # self.date_analysis = MISSING_DATE TODO: Missing in JASEN data
         jasen_run = jasen_report["run_metadata"]["run"]
+        sample.date_analysis = datetime.fromisoformat(jasen_run["date"])
         sample.method_sequencing = f"{jasen_run['sequencing_platform']} / {jasen_run['sequencing_type']}"  # TODO: Verify
 
         samples.append(sample)
