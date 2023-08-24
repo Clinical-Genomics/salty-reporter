@@ -6,9 +6,15 @@ import json
 
 argp = argparse.ArgumentParser()
 argp.add_argument(
-    "-i",
-    "--input-file",
+    "-j",
+    "--jasen-report",
     help="Input JASEN report file in JSON format",
+    required=True,
+)
+argp.add_argument(
+    "-s",
+    "--sample-file",
+    help="Input sample info file in JSON from CG",
     required=True,
 )
 argp.add_argument(
@@ -21,7 +27,7 @@ args = argp.parse_args()
 
 
 def main():
-    with open(args.input_file) as jasen_report_f:
+    with open(args.jasen_report) as jasen_report_f:
         jasen_report = json.load(jasen_report_f)
 
     # Initiate some dummy objects

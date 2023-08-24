@@ -1,0 +1,29 @@
+{
+  "key": "angryagronomist",
+  "value": {
+    "blast_pubmlst": {
+      "sequence_type": "5",
+      "thresholds": "Passed"
+    },
+    "quast_assembly": {
+      "estimated_genome_length": 1234567,
+      "gc_percentage": "50.0000000000",
+      "n50": 50000,
+      "necessary_contigs": 99
+    },
+    "blast_resfinder_resistence": [],
+    "picard_markduplicate": {
+      "insert_size": 300,
+      "duplication_rate": ""
+    },
+    "microsalt_samtools_stats": {
+      "total_reads": 3000000,
+      "mapped_rate": 0.95,
+      "average_coverage": 185.43,
+      "coverage_10x": 0.98,
+      "coverage_30x": 0.98,
+      "coverage_50x": 0.98,
+      "coverage_100x": 0.94
+    }
+  }
+}

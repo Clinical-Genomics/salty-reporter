@@ -1,0 +1,19 @@
+[
+  {
+    "CG_ID_project": "crazycoder",
+    "CG_ID_sample": "angryagronomist",
+    "Customer_ID": "cust000",
+    "Customer_ID_project": 123456,
+    "Customer_ID_sample": "ABC-DE123-45",
+    "application_tag": "MWRNXTR003",
+    "date_arrival": "2000-01-01 00:00:00",
+    "date_libprep": "2000-01-01 00:00:00",
+    "date_sequencing": "2000-01-01 00:00:00",
+    "method_libprep": "1764:17",
+    "method_sequencing": "1830:7",
+    "organism": "E. coli",
+    "priority": "standard",
+    "reference": "AB012345.1",
+    "sequencing_qc_passed": true
+  },
+]
