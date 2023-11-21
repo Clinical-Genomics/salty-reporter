@@ -1,37 +1,14 @@
 import argparse
 import glob
-import models
 from datetime import date, datetime
 from jinja2 import BaseLoader, Environment, FileSystemLoader, Template
 import json
-
-argp = argparse.ArgumentParser()
-argp.add_argument(
-    "-d",
-    "--jasen-report-dir",
-    help="A folder with JASEN report files in JSON format to be parsed",
-)
-argp.add_argument(
-    "-j",
-    "--jasen-report",
-    help="Input JASEN report file in JSON format to be parsed",
-)
-argp.add_argument(
-    "-s",
-    "--sample-info",
-    help="Input sample info file in JSON from CG",
-    required=True,
-)
-argp.add_argument(
-    "-o",
-    "--output-directory",
-    help="Path to the output directory where to store generated reports",
-    required=True,
-)
-args = argp.parse_args()
+import sys
 
 
 def main():
+    args = parse_args(sys.argv[1:])
+
     if not args.jasen_report_dir and not args.jasen_report:
         print(f"ERROR: One of --jasen-report-dir or --jasen-report is required")
 
@@ -46,6 +23,34 @@ def main():
 
     for jasen_report_path in jasen_report_paths:
         process_jasen_report(jasen_report_path, sample_infos)
+
+
+def parse_args(argv):
+    argp = argparse.ArgumentParser()
+    argp.add_argument(
+        "-d",
+        "--jasen-report-dir",
+        help="A folder with JASEN report files in JSON format to be parsed",
+    )
+    argp.add_argument(
+        "-j",
+        "--jasen-report",
+        help="Input JASEN report file in JSON format to be parsed",
+    )
+    argp.add_argument(
+        "-s",
+        "--sample-info",
+        help="Input sample info file in JSON from CG",
+        required=True,
+    )
+    argp.add_argument(
+        "-o",
+        "--output-directory",
+        help="Path to the output directory where to store generated reports",
+        required=True,
+    )
+    args = argp.parse_args(argv)
+    return args
 
 
 def process_jasen_report(jasen_report_path, sample_infos):
