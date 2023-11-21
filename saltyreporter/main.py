@@ -9,9 +9,6 @@ import sys
 def main():
     args = parse_args(sys.argv[1:])
 
-    if not args.jasen_report_dir and not args.jasen_report:
-        print(f"ERROR: One of --jasen-report-dir or --jasen-report is required")
-
     jasen_report_paths = []
     if args.jasen_report_dir:
         jasen_report_paths = glob.glob(f"{args.jasen_report_dir}/*")
@@ -50,6 +47,14 @@ def parse_args(argv):
         required=True,
     )
     args = argp.parse_args(argv)
+    if (not args.jasen_report_dir and not args.jasen_report) or (
+        args.jasen_report and args.jasen_report_dir
+    ):
+        print(
+            f"ERROR: One (and only one) of --jasen-report-dir or --jasen-report is required"
+        )
+        sys.exit(1)
+
     return args
 
 
