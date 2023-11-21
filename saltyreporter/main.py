@@ -121,7 +121,9 @@ def process_jasen_report(jasen_report_path, sample_infos):
 
         jasen_run = jasen_report["run_metadata"]["run"]
         sample.date_analysis = datetime.fromisoformat(jasen_run["date"])
-        sample.method_sequencing = f"{jasen_run['sequencing_platform']} / {jasen_run['sequencing_type']}"  # TODO: Verify
+        sample.method_sequencing = (
+            f"() / {jasen_run['sequencing_type']}"  # TODO: Verify
+        )
 
         samples.append(sample)
 
