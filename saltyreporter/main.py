@@ -1,4 +1,5 @@
 import argparse
+import glob
 import models
 from datetime import date, datetime
 from jinja2 import BaseLoader, Environment, FileSystemLoader, Template
@@ -6,10 +7,14 @@ import json
 
 argp = argparse.ArgumentParser()
 argp.add_argument(
+    "-d",
+    "--jasen-report-dir",
+    help="A folder with JASEN report files in JSON format to be parsed",
+)
+argp.add_argument(
     "-j",
     "--jasen-report",
-    help="Input JASEN report file in JSON format",
-    required=True,
+    help="Input JASEN report file in JSON format to be parsed",
 )
 argp.add_argument(
     "-s",
@@ -19,18 +24,33 @@ argp.add_argument(
 )
 argp.add_argument(
     "-o",
-    "--output-basename",
-    help="Base namne for output HTML reports",
+    "--output-directory",
+    help="Path to the output directory where to store generated reports",
     required=True,
 )
 args = argp.parse_args()
 
 
 def main():
-    with open(args.jasen_report) as jasen_report_f:
-        jasen_report = json.load(jasen_report_f)
+    if not args.jasen_report_dir and not args.jasen_report:
+        print(f"ERROR: One of --jasen-report-dir or --jasen-report is required")
+
+    jasen_report_paths = []
+    if args.jasen_report_dir:
+        jasen_report_paths = glob.glob(f"{args.jasen_report_dir}/*")
+    else:
+        jasen_report_paths = [args.jasen_report]
+
     with open(args.sample_info) as sample_info_f:
         sample_infos = json.load(sample_info_f)
+
+    for jasen_report_path in jasen_report_paths:
+        process_jasen_report(jasen_report_path, sample_infos)
+
+
+def process_jasen_report(jasen_report_path, sample_infos):
+    with open(jasen_report_path) as jasen_report_f:
+        jasen_report = json.load(jasen_report_f)
 
     # Initiate some dummy objects
     MISSING_IN_JASEN_REPORT = "MISSING IN JASEN REPORT!"
