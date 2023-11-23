@@ -63,7 +63,7 @@ def process_reports(args):
     sample_info_dict = {si["Customer_ID_sample"]: si for si in sample_infos}
 
     samples = []
-    for jasen_report_path in jasen_report_paths:
+    for jasen_report_path in sorted(jasen_report_paths):
         with open(jasen_report_path) as jasen_report_f:
             jasen_report = json.load(jasen_report_f)
 
