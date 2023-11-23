@@ -60,6 +60,8 @@ def process_reports(args):
     with open(args.sample_info) as sample_info_f:
         sample_infos = json.load(sample_info_f)
 
+    sample_info_dict = {si["Customer_ID_sample"]: si for si in sample_infos}
+
     samples = []
     for jasen_report_path in jasen_report_paths:
         with open(jasen_report_path) as jasen_report_f:
@@ -74,72 +76,72 @@ def process_reports(args):
         # ----------------------------------------------------------------------------
         jasen_sample_id = jasen_report["sample_id"]
 
-        for sample_info in sample_infos:
-            sample = models.Sample(CG_ID_sample=sample_info["CG_ID_sample"])
+        sample_info = sample_info_dict[jasen_sample_id]
+        sample = models.Sample(CG_ID_sample=sample_info["CG_ID_sample"])
 
-            sample.CG_ID_project = sample_info["CG_ID_project"]
-            sample.Customer_ID = sample_info["Customer_ID"]
-            sample.Customer_ID_project = sample_info["Customer_ID_project"]
-            sample.Customer_ID_sample = sample_info["Customer_ID_sample"]
-            sample.application_tag = sample_info["application_tag"]
-            sample.date_arrival = datetime.fromisoformat(sample_info["date_arrival"])
-            sample.date_libprep = datetime.fromisoformat(sample_info["date_libprep"])
-            sample.date_sequencing = datetime.fromisoformat(
-                sample_info["date_sequencing"]
-            )
-            sample.method_libprep = sample_info["method_libprep"]
-            sample.method_sequencing = sample_info["method_sequencing"]
-            sample.priority = sample_info["priority"]
-            sample.organism = sample_info["organism"]
-            sample.reference = sample_info["reference"]
-            sample.sequencing_qc_passed = sample_info["sequencing_qc_passed"]
+        sample.CG_ID_project = sample_info["CG_ID_project"]
+        sample.Customer_ID = sample_info["Customer_ID"]
+        sample.Customer_ID_project = sample_info["Customer_ID_project"]
+        sample.Customer_ID_sample = sample_info["Customer_ID_sample"]
+        sample.application_tag = sample_info["application_tag"]
+        sample.date_arrival = datetime.fromisoformat(sample_info["date_arrival"])
+        sample.date_libprep = datetime.fromisoformat(sample_info["date_libprep"])
+        sample.date_sequencing = datetime.fromisoformat(
+            sample_info["date_sequencing"]
+        )
+        sample.method_libprep = sample_info["method_libprep"]
+        sample.method_sequencing = sample_info["method_sequencing"]
+        sample.priority = sample_info["priority"]
+        sample.organism = sample_info["organism"]
+        sample.reference = sample_info["reference"]
+        sample.sequencing_qc_passed = sample_info["sequencing_qc_passed"]
 
-            mlst_result = [
-                tr for tr in jasen_report["typing_result"] if tr["type"] == "mlst"
-            ][0]
-            sample.ST = mlst_result.get("sequence_type", -1)
-            sample.pubmlst_ST = mlst_result.get("sequence_type", -1)
-            sample.date_analysis = datetime.fromisoformat(
-                jasen_report["run_metadata"]["run"]["date"]
-            )
+        mlst_result = [
+            tr for tr in jasen_report["typing_result"] if tr["type"] == "mlst"
+        ][0]
+        sample.ST = mlst_result.get("sequence_type", -1)
+        sample.pubmlst_ST = mlst_result.get("sequence_type", -1)
+        sample.date_analysis = datetime.fromisoformat(
+            jasen_report["run_metadata"]["run"]["date"]
+        )
 
-            quast_qc = [qc for qc in jasen_report["qc"] if qc["software"] == "quast"][0]
-            quast_res = quast_qc["result"]
-            sample.genome_length = (
-                -1
-            )  # TODO: total_length? target_length? reference_length?
-            sample.gc_percentage = quast_res["assembly_gc"]
-            sample.n50 = quast_res["n50"]
-            sample.contigs = quast_res["n_contigs"]
+        quast_qc = [qc for qc in jasen_report["qc"] if qc["software"] == "quast"][0]
+        quast_res = quast_qc["result"]
+        sample.genome_length = (
+            -1
+        )  # TODO: total_length? target_length? reference_length?
+        sample.gc_percentage = quast_res["assembly_gc"]
+        sample.n50 = quast_res["n50"]
+        sample.contigs = quast_res["n_contigs"]
 
-            postalign_qc = [
-                qc for qc in jasen_report["qc"] if qc["software"] == "postalignqc"
-            ][0]
-            postalign_res = postalign_qc["result"]
+        postalign_qc = [
+            qc for qc in jasen_report["qc"] if qc["software"] == "postalignqc"
+        ][0]
+        postalign_res = postalign_qc["result"]
 
-            sample.total_reads = postalign_res["tot_reads"]
-            sample.insert_size = postalign_res[
-                "ins_size"
-            ]  # TODO: What is "ins_size_dev" in postalignqc?
-            sample.duplication_rate = postalign_res["dup_pct"]
-            sample.mapped_rate = float(
-                postalign_res["mapped_reads"] / postalign_res["tot_reads"]
-            )  # TODO: Verify
-            sample.coverage_10x = postalign_res["pct_above_x"]["10"]  # TODO: Verify
-            sample.coverage_30x = postalign_res["pct_above_x"]["30"]  # TODO: Verify
-            sample.coverage_50x = 0.0  # FIXME: MISSING IN JASEN DATA
-            sample.coverage_100x = postalign_res["pct_above_x"]["100"]  # TODO: Verify
-            sample.average_coverage = postalign_res["mean_cov"]
-            sample.reference_genome = MISSING_IN_JASEN_REPORT  # FIXME: MISSING
-            sample.reference_length = quast_res["reference_length"]
+        sample.total_reads = postalign_res["tot_reads"]
+        sample.insert_size = postalign_res[
+            "ins_size"
+        ]  # TODO: What is "ins_size_dev" in postalignqc?
+        sample.duplication_rate = postalign_res["dup_pct"]
+        sample.mapped_rate = float(
+            postalign_res["mapped_reads"] / postalign_res["tot_reads"]
+        )  # TODO: Verify
+        sample.coverage_10x = postalign_res["pct_above_x"]["10"]  # TODO: Verify
+        sample.coverage_30x = postalign_res["pct_above_x"]["30"]  # TODO: Verify
+        sample.coverage_50x = 0.0  # FIXME: MISSING IN JASEN DATA
+        sample.coverage_100x = postalign_res["pct_above_x"]["100"]  # TODO: Verify
+        sample.average_coverage = postalign_res["mean_cov"]
+        sample.reference_genome = MISSING_IN_JASEN_REPORT  # FIXME: MISSING
+        sample.reference_length = quast_res["reference_length"]
 
-            jasen_run = jasen_report["run_metadata"]["run"]
-            sample.date_analysis = datetime.fromisoformat(jasen_run["date"])
-            sample.method_sequencing = (
-                f"() / {jasen_run['sequencing_type']}"  # TODO: Verify
-            )
+        jasen_run = jasen_report["run_metadata"]["run"]
+        sample.date_analysis = datetime.fromisoformat(jasen_run["date"])
+        sample.method_sequencing = (
+            f"() / {jasen_run['sequencing_type']}"  # TODO: Verify
+        )
 
-            samples.append(sample)
+        samples.append(sample)
 
     # ----------------------------------------------------------------------------
     # End: populate with JASEN data
