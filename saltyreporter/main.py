@@ -9,6 +9,9 @@ import sys
 def main():
     args = parse_args(sys.argv[1:])
 
+    process_reports(args)
+
+def process_reports(args):
     jasen_report_paths = []
     if args.jasen_report_dir:
         jasen_report_paths = glob.glob(f"{args.jasen_report_dir}/*")

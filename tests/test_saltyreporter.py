@@ -1,3 +1,4 @@
+import os
 import sys
 import pytest
 from saltyreporter import main
@@ -44,3 +45,25 @@ def test_argument_parsing(have_argv, want_exit, want_exitcode):
     assert exited == want_exit
     if exited:
         assert exit_code == want_exitcode
+
+
+def test_read_folder_with_input_files():
+    testreports_dir = ".testreports"
+    args = main.parse_args(
+        [
+            "-d",
+            testreports_dir,
+            "-s",
+            f"{testreports_dir}/sampleinfo.json",
+            "-o",
+            testreports_dir,
+        ]
+    )
+    os.makedirs(testreports_dir, exist_ok=True)
+    for i in range(3):
+        with open(f"{testreports_dir}/testreport_{i}.json", "w") as tr:
+            tr.write("{}\n")
+        with open(f"{testreports_dir}/sampleinfo.json", "w") as si:
+            si.write("{}\n")
+
+    main.process_reports(args)
