@@ -104,6 +104,10 @@ def process_reports(args):
         sample.date_analysis = datetime.fromisoformat(
             jasen_report["run_metadata"]["run"]["date"]
         )
+        for loci, allele in mlst_result["result"]["alleles"].items():
+            seq_type = models.SeqType("N/A", loci)
+            seq_type.allele = allele
+            sample.seq_types.append(seq_type)
 
         quast_qc = [qc for qc in jasen_report["qc"] if qc["software"] == "quast"][0]
         quast_res = quast_qc["result"]
