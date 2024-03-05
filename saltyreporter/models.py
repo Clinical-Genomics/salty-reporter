@@ -85,8 +85,8 @@ class Sample:
 
 
 class SeqType:
-    def __init__(self, CG_ID_sample: str, loci: str):
-        # [ ] Implement
+    def __init__(self, CG_ID_sample: str, loci: str, allele: int):
+        # [?] Implement
         self.samples = None  # relationship("Samples", back_populates="seq_types")
 
         # [ ] Implement

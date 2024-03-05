@@ -106,8 +106,7 @@ def process_reports(args):
             jasen_report["run_metadata"]["run"]["date"]
         )
         for loci, allele in mlst_result["result"]["alleles"].items():
-            seq_type = models.SeqType("N/A", loci)
-            seq_type.allele = allele
+            seq_type = models.SeqType(sample_info["CG_ID_sample"], loci, allele)
             #seq_type.contig_coverage # TODO: Missing
             #seq_type.identity # TODO: Missing
             #seq_type.span*100 # TODO: Missing
