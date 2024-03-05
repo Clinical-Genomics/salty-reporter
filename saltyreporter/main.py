@@ -107,16 +107,16 @@ def process_reports(args):
         )
         for loci, allele in mlst_result["result"]["alleles"].items():
             seq_type = models.SeqType(sample_info["CG_ID_sample"], loci, allele)
-            #seq_type.contig_coverage # TODO: Missing
-            #seq_type.identity # TODO: Missing
-            #seq_type.span*100 # TODO: Missing
+            # seq_type.contig_coverage # TODO: Missing
+            # seq_type.identity # TODO: Missing
+            # seq_type.span*100 # TODO: Missing
             sample.seq_types.append(seq_type)
 
         quast_qc = [qc for qc in jasen_report["qc"] if qc["software"] == "quast"][0]
         quast_res = quast_qc["result"]
-        sample.genome_length = (
-            -1
-        )  # TODO: total_length? target_length? reference_length?
+        sample.genome_length = quast_res[
+            "total_length"
+        ]  # TODO: Verify! (E.g. check how this variable is used everywhere!)
         sample.gc_percentage = quast_res["assembly_gc"]
         sample.n50 = quast_res["n50"]
         sample.contigs = quast_res["n_contigs"]
