@@ -318,34 +318,34 @@
                 </table></div>
         	</div>
 
-                {% if sample.genome_length > -1 %}
-                  <div class="panel"><div class="panel-body">
-                  <h4>MLST</h4>
-                  <h6>Identitetströskel: {{threshold.mlst_id}}%, Längdtröskel: 100%, Novel misstankströskel (längd): {{threshold.mlst_span}}%, Novel misstankströskel: {{threshold.mlst_novel_id}}%</h6>
-                  {% if not sample.seq_types|length == 0 and 'saknas' not in sample.ST_status%}
-                    <div class="table-responsive"><table  class="table table-bordered" style='table-layout:fixed;'>
-                    <tr>
-                      <th width="4%">#</th>
-                      <th width="30%">Loci</th>
-                      <th width="20%">Allel</th>
-                      <th width="20%">Kmer Täckning</th>
-                      <th>Identitet %</th>
-                      <th>Längd (HSP) %</th>
-                    </tr>
-                    {% for seq_type in sample.seq_types if seq_type.st_predictor%}
-                      <tr>
-                        <td>{{loop.index}}</td>
-                        <td>{{seq_type.loci}}</td>
-                        <td>{{seq_type.allele}}</td>
-                        <td>{{seq_type.contig_coverage|round(2)}}x</td>
-                        <td>{{seq_type.identity|round(2)}}%</td>
-                        <td>{{(seq_type.span*100)|round(2)}}%</td>
-                      </tr>
-                    {% endfor %}
-                    </table>
-                  {% else %}
-                    <i>MLST data saknas</i>
-                  {% endif %}
+            {% if sample.genome_length > -2 %}
+              <div class="panel"><div class="panel-body">
+              <h4>MLST</h4>
+              <h6>Identitetströskel: {{threshold.mlst_id}}%, Längdtröskel: 100%, Novel misstankströskel (längd): {{threshold.mlst_span}}%, Novel misstankströskel: {{threshold.mlst_novel_id}}%</h6>
+              {% if sample.seq_types and not sample.seq_types|length == 0 and 'saknas' not in sample.ST_status %}
+                <div class="table-responsive"><table  class="table table-bordered" style='table-layout:fixed;'>
+                <tr>
+                  <th width="4%">#</th>
+                  <th width="30%">Loci</th>
+                  <th width="20%">Allel</th>
+                  <th width="20%">Kmer Täckning</th>
+                  <th>Identitet %</th>
+                  <th>Längd (HSP) %</th>
+                </tr>
+                {% for seq_type in sample.seq_types if seq_type.st_predictor%}
+                  <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{seq_type.loci}}</td>
+                    <td>{{seq_type.allele}}</td>
+                    <td>{{seq_type.contig_coverage|round(2)}}x</td>
+                    <td>{{seq_type.identity|round(2)}}%</td>
+                    <td>{{(seq_type.span*100)|round(2)}}%</td>
+                  </tr>
+                {% endfor %}
+                </table>
+              {% else %}
+                <i>MLST data saknas</i>
+              {% endif %}
 
                   <br><br>
                   <div class="table-responsive">
