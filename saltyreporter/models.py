@@ -9,13 +9,13 @@ class Sample:
         self.seq_types: List[
             SeqType
         ] = []  # relationship("Seq_types", back_populates="samples")
-        # [/] Implement
+        # [-] Implement
         self.projects = None  # relationship("Projects", back_populates="samples")
-        # [/] Implement
+        # [ ] Implement
         self.resistances = None  # relationship("Resistances", back_populates="samples")
-        # [/] Implement
+        # [-] Implement
         self.steps = None  # relationship("Steps", back_populates="samples")
-        # [/] Implement
+        # [-] Implement
         self.expacs = None  # relationship("Expacs", back_populates="samples")
 
         # [x] Implement
@@ -34,8 +34,12 @@ class Sample:
         self.ST: int = -1  # db.Column(db.SmallInteger, default=-1)
         # [x] Implement
         self.pubmlst_ST: int = -1  # db.Column(db.SmallInteger, default=-1)
-        # [>] Implement TODO: Important to fix this!
+
+        # [?] Implement TODO: Important to fix this!
+        # Update 20240305: Have set it to qc/quast/total_length for now
+        # FIXME: Verify!
         self.genome_length: int = -1  # db.Column(db.Integer, default=-1)
+
         # [x] Implement
         self.gc_percentage: float = 0.0  # db.Column(db.Float(3, 2), default=0.0)
         # [x] Implement
@@ -159,85 +163,85 @@ class Resistances:
 
 class Expacs:
     def __init__(self):
-        # [ ] Implement
+        # [-] Implement
         self.samples = None  # relationship("Samples", back_populates="expacs")
-        # [ ] Implement
+        # [-] Implement
         self.CG_ID_sample: str = ""  # db.Column(db.String(15), ForeignKey("samples.CG_ID_sample"), primary_key=True)
-        # [ ] Implement
+        # [-] Implement
         self.gene: str = ""  # db.Column(db.String(50), primary_key=True)
-        # [ ] Implement
+        # [-] Implement
         self.instance: str = ""  # db.Column(db.String(30), primary_key=True)
-        # [ ] Implement
+        # [-] Implement
         self.contig_name: str = ""  # db.Column(db.String(20), primary_key=True)
-        # [ ] Implement
+        # [-] Implement
         self.contig_length: int = -1  # db.Column(db.Integer)
-        # [ ] Implement
+        # [-] Implement
         self.contig_coverage: float = 0.0  # db.Column(db.Float(6, 2))
-        # [ ] Implement
+        # [-] Implement
         self.identity: float = 0.0  # db.Column(db.Float(3, 2), default=0.0)
-        # [ ] Implement
+        # [-] Implement
         self.span: float = 0.0  # db.Column(db.Float(3, 2), default=0.0)
-        # [ ] Implement
+        # [-] Implement
         self.evalue: str = ""  # db.Column(db.String(10))
-        # [ ] Implement
+        # [-] Implement
         self.bitscore: int = -1  # db.Column(db.SmallInteger)
-        # [ ] Implement
+        # [-] Implement
         self.subject_length: int = -1  # db.Column(db.Integer)
-        # [ ] Implement
+        # [-] Implement
         self.reference: str = ""  # db.Column(db.String(40))
-        # [ ] Implement
+        # [-] Implement
         self.virulence: str = ""  # db.Column(db.String(120))
-        # [ ] Implement
+        # [-] Implement
         self.contig_start: int = -1  # db.Column(db.Integer)
-        # [ ] Implement
+        # [-] Implement
         self.contig_end: int = -1  # db.Column(db.Integer)
 
 
 class Projects:
     def __init__(self):
-        # [ ] Implement
+        # [?] Implement
         self.samples = None  # relationship("Samples", back_populates="projects")
-        # [ ] Implement
+        # [?] Implement
         self.reports = None  # relationship("Reports", back_populates="projects")
-        # [ ] Implement
+        # [?] Implement
         self.CG_ID_project: str = (
             ""  # db.Column(db.String(15), primary_key=True, nullable=False)
         )
-        # [ ] Implement
+        # [?] Implement
         self.Customer_ID_project: str = ""  # db.Column(db.String(15))
-        # [ ] Implement
+        # [?] Implement
         self.date_ordered: datetime = datetime.now()  # db.Column(db.DateTime)
-        # [ ] Implement
+        # [?] Implement
         self.Customer_ID: str = ""  # db.Column(db.String(15))
 
 
 class Versions:
     def __init__(self):
-        # [ ] Implement
+        # [?] Implement
         self.name: str = (
             ""  # db.Column(db.String(45), primary_key=True, nullable=False)
         )
-        # [ ] Implement
+        # [?] Implement
         self.version: str = ""  # db.Column(db.String(10))
 
 
 class Reports:
     def __init__(self):
-        # [ ] Implement
+        # [?] Implement
         self.projects = None  # relationship("Projects", back_populates="reports")
-        # [ ] Implement
+        # [?] Implement
         self.CG_ID_project: str = ""  # db.Column(db.String(15), ForeignKey("projects.CG_ID_project"), primary_key=True)
-        # [ ] Implement
+        # [?] Implement
         self.steps_aggregate: str = ""  # db.Column(db.String(100))
-        # [ ] Implement
+        # [?] Implement
         self.date: datetime = datetime.now()  # db.Column(db.DateTime)
-        # [ ] Implement
+        # [?] Implement
         self.version: int = -1  # db.Column(db.Integer, default=1, primary_key=True)
 
 
 class Collections:
     def __init__(self):
-        # [ ] Implement
+        # [?] Implement
         self.ID_collection: str = ""  # db.Column(db.String(15), primary_key=True)
-        # [ ] Implement
+        # [?] Implement
         self.CG_ID_sample: str = ""  # db.Column(db.String(15), primary_key=True)
