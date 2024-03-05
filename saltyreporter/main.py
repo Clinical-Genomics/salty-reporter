@@ -87,9 +87,7 @@ def process_reports(args):
         sample.application_tag = sample_info["application_tag"]
         sample.date_arrival = datetime.fromisoformat(sample_info["date_arrival"])
         sample.date_libprep = datetime.fromisoformat(sample_info["date_libprep"])
-        sample.date_sequencing = datetime.fromisoformat(
-            sample_info["date_sequencing"]
-        )
+        sample.date_sequencing = datetime.fromisoformat(sample_info["date_sequencing"])
         sample.method_libprep = sample_info["method_libprep"]
         sample.method_sequencing = sample_info["method_sequencing"]
         sample.priority = sample_info["priority"]
@@ -134,10 +132,12 @@ def process_reports(args):
         sample.mapped_rate = float(
             postalign_res["mapped_reads"] / postalign_res["tot_reads"]
         )  # TODO: Verify
-        sample.coverage_10x = postalign_res["pct_above_x"]["10"]*0.01  # TODO: Verify
-        sample.coverage_30x = postalign_res["pct_above_x"]["30"]*0.01  # TODO: Verify
+        sample.coverage_10x = postalign_res["pct_above_x"]["10"] * 0.01  # TODO: Verify
+        sample.coverage_30x = postalign_res["pct_above_x"]["30"] * 0.01  # TODO: Verify
         sample.coverage_50x = -1  # FIXME: MISSING IN JASEN DATA
-        sample.coverage_100x = postalign_res["pct_above_x"]["100"]*0.01  # TODO: Verify
+        sample.coverage_100x = (
+            postalign_res["pct_above_x"]["100"] * 0.01
+        )  # TODO: Verify
         sample.average_coverage = postalign_res["mean_cov"]
         sample.reference_genome = sample_info["reference"]
         sample.reference_length = quast_res["reference_length"]
