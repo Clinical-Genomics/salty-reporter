@@ -88,37 +88,36 @@ class SeqType:
     def __init__(self, CG_ID_sample: str, loci: str, allele: int):
         # [?] Implement
         self.samples = None  # relationship("Samples", back_populates="seq_types")
-
-        # [ ] Implement
+        # [x] Implement
         self.CG_ID_sample: str = CG_ID_sample  # db.Column(db.String(15), ForeignKey("samples.CG_ID_sample"), primary_key=True)
-        # [ ] Implement
+        # [x] Implement
         self.loci: str = loci  # db.Column(db.String(10), primary_key=True)
+        # [x] Implement
+        self.allele: int = allele  # db.Column(db.SmallInteger)
 
-        # [ ] Implement
-        self.allele: int = -1  # db.Column(db.SmallInteger)
-        # [ ] Implement
+        # [-] Implement
         self.contig_name: str = ""  # db.Column(db.String(20), primary_key=True)
-        # [ ] Implement
+        # [-] Implement
         self.contig_length: int = -1  # db.Column(db.Integer)
-        # [ ] Implement
+        # [-] Implement
         self.contig_coverage: float = 0.0  # db.Column(db.Float(6, 2))
-        # [ ] Implement
+        # [-] Implement
         self.identity: float = 0.0  # db.Column(db.Float(3, 2), default=0.0)
-        # [ ] Implement
+        # [-] Implement
         self.span: float = 0.0  # db.Column(db.Float(3, 2), default=0.0)
-        # [ ] Implement
+        # [-] Implement
         self.evalue: str = ""  # db.Column(db.String(10))
-        # [ ] Implement
+        # [-] Implement
         self.bitscore: int = -1  # db.Column(db.SmallInteger)
-        # [ ] Implement
+        # [-] Implement
         self.subject_length: int = -1  # db.Column(db.Integer)
-        # [ ] Implement
+        # [-] Implement
         self.st_predictor: bool = (
-            True  # db.Column(db.Boolean, default=0) # TODO: Change back to false
+            True  # db.Column(db.Boolean, default=0) # TODO: Change back to false?
         )
-        # [ ] Implement
+        # [-] Implement
         self.contig_start: int = -1  # db.Column(db.Integer)
-        # [ ] Implement
+        # [-] Implement
         self.contig_end: int = -1  # db.Column(db.Integer)
 
 
