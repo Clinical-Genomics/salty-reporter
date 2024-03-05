@@ -83,6 +83,7 @@ def process_reports(args):
         sample.Customer_ID = sample_info["Customer_ID"]
         sample.Customer_ID_project = sample_info["Customer_ID_project"]
         sample.Customer_ID_sample = sample_info["Customer_ID_sample"]
+
         sample.application_tag = sample_info["application_tag"]
         sample.date_arrival = datetime.fromisoformat(sample_info["date_arrival"])
         sample.date_libprep = datetime.fromisoformat(sample_info["date_libprep"])
@@ -107,6 +108,9 @@ def process_reports(args):
         for loci, allele in mlst_result["result"]["alleles"].items():
             seq_type = models.SeqType("N/A", loci)
             seq_type.allele = allele
+            #seq_type.contig_coverage # TODO: Missing
+            #seq_type.identity # TODO: Missing
+            #seq_type.span*100 # TODO: Missing
             sample.seq_types.append(seq_type)
 
         quast_qc = [qc for qc in jasen_report["qc"] if qc["software"] == "quast"][0]
@@ -126,7 +130,7 @@ def process_reports(args):
         sample.total_reads = postalign_res["tot_reads"]
         sample.insert_size = postalign_res[
             "ins_size"
-        ]  # TODO: What is "ins_size_dev" in postalignqc?
+        ]  # TODO: What is "ins_size_dev" in postalignqc? Something with "deviation"?
         sample.duplication_rate = quast_qc["result"]["duplication_ratio"]
         sample.mapped_rate = float(
             postalign_res["mapped_reads"] / postalign_res["tot_reads"]
