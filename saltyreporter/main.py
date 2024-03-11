@@ -110,6 +110,7 @@ def process_reports(args):
             # seq_type.identity # TODO: Missing
             # seq_type.span*100 # TODO: Missing
             sample.seq_types.append(seq_type)
+        sample.seq_types.sort(key=lambda x: x.loci)
 
         # Parse resistance data
         resistance_infos = [
