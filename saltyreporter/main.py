@@ -95,6 +95,7 @@ def process_reports(args):
         sample.reference = sample_info["reference"]
         sample.sequencing_qc_passed = sample_info["sequencing_qc_passed"]
 
+        # Parse MLST data
         mlst_result = [
             tr for tr in jasen_report["typing_result"] if tr["type"] == "mlst"
         ][0]
@@ -110,6 +111,46 @@ def process_reports(args):
             # seq_type.span*100 # TODO: Missing
             sample.seq_types.append(seq_type)
 
+        # Parse resistance data
+        resistance_infos = [
+            item
+            for item in jasen_report["element_type_result"]
+            if item["software"] == "resfinder"
+        ]
+        if len(resistance_infos):
+            resfinder_info = resistance_infos[0]
+            for gene in resfinder_info["result"]["genes"]:
+                for phenotype in gene["phenotypes"]:
+                    resistance = models.Resistance()
+                    resistance.samples = (
+                        None  # relationship("Samples", back_populates="resistances")
+                    )
+                    resistance.CG_ID_sample: str = sample_info["CG_ID_sample"]
+                    resistance.gene: str = gene["gene_symbol"]
+                    resistance.instance: str = (
+                        ""  # db.Column(db.String(30), primary_key=True)
+                    )
+                    resistance.contig_name: str = gene["contig_id"]
+                    resistance.contig_length: int = -1  # db.Column(db.Integer)
+                    resistance.contig_coverage: float = gene[
+                        "coverage"
+                    ]  # TODO : Verify!
+                    resistance.identity: float = gene["identity"]
+                    resistance.span: float = (
+                        0.0  # db.Column(db.Float(3, 2), default=0.0)
+                    )
+                    resistance.evalue: str = ""  # db.Column(db.String(10))
+                    resistance.bitscore: int = -1  # db.Column(db.SmallInteger)
+                    resistance.subject_length: int = -1  # db.Column(db.Integer)
+                    resistance.reference: str = gene["accession"]  # TODO: Verify!
+                    resistance.resistance: str = phenotype
+                    resistance.contig_start: int = -1  # db.Column()
+                    resistance.contig_end: int = -1  # db.Column(db.Integer)
+                    resistance.threshold = "Passed"  # TODO: Check what is the threshold for this to be set, in microSALT
+                    sample.resistances.append(resistance)
+                    print(f"Adding resistance: {gene['gene_symbol']} ...")
+
+        # Parse QC data
         quast_qc = [qc for qc in jasen_report["qc"] if qc["software"] == "quast"][0]
         quast_res = quast_qc["result"]
         sample.genome_length = quast_res[
@@ -123,7 +164,6 @@ def process_reports(args):
             qc for qc in jasen_report["qc"] if qc["software"] == "postalignqc"
         ][0]
         postalign_res = postalign_qc["result"]
-
         sample.total_reads = postalign_res["tot_reads"]
         sample.insert_size = postalign_res[
             "ins_size"
@@ -142,6 +182,7 @@ def process_reports(args):
         sample.reference_genome = sample_info["reference"]
         sample.reference_length = quast_res["reference_length"]
 
+        # Parse misc information
         jasen_run = jasen_report["run_metadata"]["run"]
         sample.date_analysis = datetime.fromisoformat(jasen_run["date"])
         sample.method_sequencing = (

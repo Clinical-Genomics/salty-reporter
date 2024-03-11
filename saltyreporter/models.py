@@ -11,8 +11,10 @@ class Sample:
         ] = []  # relationship("Seq_types", back_populates="samples")
         # [-] Implement
         self.projects = None  # relationship("Projects", back_populates="samples")
-        # [ ] Implement
-        self.resistances = None  # relationship("Resistances", back_populates="samples")
+        # [>] Implement
+        self.resistances: List[
+            Resistance
+        ] = []  # relationship("Resistances", back_populates="samples")
         # [-] Implement
         self.steps = None  # relationship("Steps", back_populates="samples")
         # [-] Implement
@@ -125,9 +127,9 @@ class SeqType:
         self.contig_end: int = -1  # db.Column(db.Integer)
 
 
-class Resistances:
+class Resistance:
     def __init__(self):
-        # [ ] Implement
+        # [?] Implement
         self.samples = None  # relationship("Samples", back_populates="resistances")
         # [ ] Implement
         self.CG_ID_sample: str = ""  # db.Column(db.String(15), ForeignKey("samples.CG_ID_sample"), primary_key=True)
