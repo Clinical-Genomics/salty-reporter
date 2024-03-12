@@ -7,7 +7,7 @@
 - [x] Ticket ID
 - [x] CG Projekt ID
 - [x] Kund ID
-- [ ] Rapport version
+- [x] Rapport version
 - [x] Ansvarig bioinformatiker
 - [x] JASEN version
 
@@ -16,7 +16,7 @@
 - [x] Prov ID (dup)
 - [x] CG Prov ID (dup)
 - [x] Organism (dup)
-- [ ] Sekvenstyp (dup)
+- [>] Sekvenstyp (dup)
 - [ ] Tröskelvärden (dup)
 
 ### Provsammanställning

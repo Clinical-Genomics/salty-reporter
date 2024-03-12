@@ -75,6 +75,7 @@ def process_reports(args):
         # Populate fields with data from CG metadata and JASEN report as far as possible
         # ----------------------------------------------------------------------------
         jasen_sample_id = jasen_report["sample_id"]
+        jasen_version = jasen_report["run_metadata"]["run"]["version"]
 
         sample_info = sample_info_dict[jasen_sample_id]
         sample = models.Sample(CG_ID_sample=sample_info["CG_ID_sample"])
@@ -197,13 +198,15 @@ def process_reports(args):
     # ----------------------------------------------------------------------------
 
     # Set some dummy values
-    version = "1.0"
-    user = "ABC"
     verified_organisms = ["Homo Sapiens"]
     todays_date = date.today().isoformat()
 
+    version = "1.0 (?)"
     threshold = Threshold()
-    reports = [Report()]
+    user = "Dr. Bioinfie"
+    report = Report()
+    report.version = "1.0 (report)"
+    reports = [report]
 
     j2env = Environment(loader=FileSystemLoader("./templates"))
 
@@ -227,7 +230,7 @@ def process_reports(args):
         threshold=threshold,
         verified_organisms=verified_organisms,
         reports=reports,
-        build=version,
+        build=jasen_version,
     )
     os.makedirs(args.output_directory, exist_ok=True)
     typing_path = f"{args.output_directory}/typing_report.html"
@@ -297,6 +300,7 @@ class Threshold:
 class Report:
     def __init__(self):
         self.date = datetime.now()
+        self.version = ""
 
 
 if __name__ == "__main__":
