@@ -36,6 +36,7 @@ class Sample:
         self.ST: int = -1  # db.Column(db.SmallInteger, default=-1)
         # [x] Implement
         self.pubmlst_ST: int = -1  # db.Column(db.SmallInteger, default=-1)
+        self.ST_status = "None"
 
         # [?] Implement TODO: Important to fix this!
         # Update 20240305: Have set it to qc/quast/total_length for now

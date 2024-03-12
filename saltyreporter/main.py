@@ -99,13 +99,15 @@ def process_reports(args):
         # Parse MLST data
         mlst_result = [
             tr for tr in jasen_report["typing_result"] if tr["type"] == "mlst"
-        ][0]
+        ][0]["result"]
         sample.ST = mlst_result.get("sequence_type", -1)
+        if sample.ST and sample.ST > -1:
+            sample.ST_status = str(sample.ST)
         sample.pubmlst_ST = mlst_result.get("sequence_type", -1)
         sample.date_analysis = datetime.fromisoformat(
             jasen_report["run_metadata"]["run"]["date"]
         )
-        for loci, allele in mlst_result["result"]["alleles"].items():
+        for loci, allele in mlst_result["alleles"].items():
             seq_type = models.SeqType(sample_info["CG_ID_sample"], loci, allele)
             # seq_type.contig_coverage # TODO: Missing
             # seq_type.identity # TODO: Missing
